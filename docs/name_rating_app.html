@@ -1491,7 +1491,8 @@
                         renderNames();
                         updateStats();
                     }
-                    // Don't automatically show login modal - let user choose
+                    // Show login modal automatically when app opens
+                    showLoginModal();
                 }
             });
         } else {
@@ -2313,24 +2314,15 @@
         loadFilters(); // Load saved filters first
         loadData(); // Load data (ratings will be loaded by auth state listener or from localStorage)
         
-        // Ensure login button visibility after a short delay (in case auth state hasn't fired yet)
+        // Show login modal automatically if Firebase is configured and no user is logged in
         if (isFirebaseConfigured) {
+            // Wait a bit for auth state to initialize, then show modal if no user
             setTimeout(() => {
-                const loginButton = document.getElementById('loginButton');
                 const userInfo = document.getElementById('userInfo');
-                // If user is not logged in and button exists, show it
-                if (loginButton && !currentUser && userInfo.style.display !== 'flex') {
-                    loginButton.style.display = 'block';
-                    console.log('Login button shown via fallback');
-                } else {
-                    console.log('Login button check:', {
-                        buttonExists: !!loginButton,
-                        currentUser: !!currentUser,
-                        userInfoVisible: userInfo.style.display === 'flex',
-                        buttonDisplay: loginButton ? loginButton.style.display : 'N/A'
-                    });
+                if (!currentUser && userInfo.style.display !== 'flex') {
+                    showLoginModal();
                 }
-            }, 1000);
+            }, 500);
         }
     </script>
 </body>
