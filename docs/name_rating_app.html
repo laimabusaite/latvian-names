@@ -305,13 +305,14 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            z-index: 2000;
+            z-index: 10000;
             max-width: 400px;
+            width: 90%;
             display: none;
         }
 
         .confirm-dialog.show {
-            display: block;
+            display: block !important;
             animation: fadeIn 0.3s ease-out;
         }
 
@@ -379,15 +380,19 @@
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            z-index: 3000;
+            z-index: 10001;
             max-width: 400px;
             width: 90%;
             display: none;
         }
 
         .login-modal.show {
-            display: block;
+            display: block !important;
             animation: fadeIn 0.3s ease-out;
+        }
+
+        #loginOverlay {
+            z-index: 10000;
         }
 
         .login-modal h2 {
@@ -705,12 +710,12 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 2999;
+            z-index: 9999;
             display: none;
         }
 
         .overlay.show {
-            display: block;
+            display: block !important;
         }
 
         .names-container {
@@ -1307,13 +1312,27 @@
                 // If Firebase not configured, skip login and use localStorage only
                 return;
             }
-            document.getElementById('loginModal').classList.add('show');
-            document.getElementById('loginOverlay').style.display = 'block';
+            const modal = document.getElementById('loginModal');
+            const overlay = document.getElementById('loginOverlay');
+            if (modal && overlay) {
+                modal.style.display = 'block';
+                modal.classList.add('show');
+                overlay.style.display = 'block';
+                overlay.classList.add('show');
+            }
         }
 
         function hideLoginModal() {
-            document.getElementById('loginModal').classList.remove('show');
-            document.getElementById('loginOverlay').style.display = 'none';
+            const modal = document.getElementById('loginModal');
+            const overlay = document.getElementById('loginOverlay');
+            if (modal) {
+                modal.classList.remove('show');
+                modal.style.display = 'none';
+            }
+            if (overlay) {
+                overlay.classList.remove('show');
+                overlay.style.display = 'none';
+            }
         }
 
         function skipLogin() {
@@ -1946,15 +1965,33 @@
         function showClearDialog() {
             const dialog = document.getElementById('confirmDialog');
             const overlay = document.getElementById('overlay');
-            dialog.classList.add('show');
-            overlay.classList.add('show');
+            if (dialog && overlay) {
+                // Make sure dialog is visible
+                dialog.style.display = 'block';
+                dialog.classList.add('show');
+                overlay.style.display = 'block';
+                overlay.classList.add('show');
+                console.log('Clear dialog shown', {
+                    dialogDisplay: dialog.style.display,
+                    dialogClasses: dialog.className,
+                    overlayDisplay: overlay.style.display
+                });
+            } else {
+                console.error('Clear dialog elements not found', { dialog, overlay });
+            }
         }
 
         function hideClearDialog() {
             const dialog = document.getElementById('confirmDialog');
             const overlay = document.getElementById('overlay');
-            dialog.classList.remove('show');
-            overlay.classList.remove('show');
+            if (dialog) {
+                dialog.classList.remove('show');
+                dialog.style.display = 'none';
+            }
+            if (overlay) {
+                overlay.classList.remove('show');
+                overlay.style.display = 'none';
+            }
         }
 
         async function clearAllData() {
@@ -1980,6 +2017,9 @@
             currentTab = 'unrated';
             localStorage.removeItem('nameFilters');
             
+            // Save cleared filters
+            saveFilters();
+            
             // Update tab appearance
             document.querySelectorAll('.tab').forEach(tab => {
                 if (tab.dataset.tab === 'unrated') {
@@ -1989,8 +2029,9 @@
                 }
             });
             
-            // Re-render
+            // Re-render everything
             renderNames();
+            updateStats();
             hideClearDialog();
             
             // Show confirmation
@@ -2006,10 +2047,32 @@
         }
 
         // Event listeners for clear button
-        document.getElementById('clearButton').addEventListener('click', showClearDialog);
-        document.getElementById('cancelClear').addEventListener('click', hideClearDialog);
-        document.getElementById('confirmClear').addEventListener('click', clearAllData);
-        document.getElementById('overlay').addEventListener('click', hideClearDialog);
+        const clearButton = document.getElementById('clearButton');
+        if (clearButton) {
+            clearButton.addEventListener('click', showClearDialog);
+        } else {
+            console.error('Clear button not found');
+        }
+        
+        const cancelClear = document.getElementById('cancelClear');
+        if (cancelClear) {
+            cancelClear.addEventListener('click', hideClearDialog);
+        }
+        
+        const confirmClear = document.getElementById('confirmClear');
+        if (confirmClear) {
+            confirmClear.addEventListener('click', () => {
+                console.log('Confirm clear clicked');
+                clearAllData();
+            });
+        } else {
+            console.error('Confirm clear button not found');
+        }
+        
+        const overlay = document.getElementById('overlay');
+        if (overlay) {
+            overlay.addEventListener('click', hideClearDialog);
+        }
 
 
         // Create popularity chart
