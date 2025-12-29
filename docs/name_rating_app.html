@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latviešu vārdadienas - Vērtēšanas lietotne</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            background: white;
+            border-radius: 0;
+            box-shadow: none;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            margin-bottom: 3px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.85em;
+        }
+
+        .controls {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            flex-shrink: 0;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #495057;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .tab .count {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+
+        .tab.active .count {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .filters-and-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .filters-section {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .stats-inline {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-item label {
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9em;
+        }
+
+        .filter-item select,
+        .filter-item input {
+            padding: 8px 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.9em;
+            transition: border-color 0.3s;
+        }
+
+        .filter-item select:focus,
+        .filter-item input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .kalendars-toggle {
+            padding: 8px 16px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            background: white;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .kalendars-toggle:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .kalendars-toggle.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            min-width: 80px;
+        }
+
+        .stat-box .label {
+            font-size: 0.7em;
+            color: #6c757d;
+            margin-bottom: 2px;
+        }
+
+        .stat-box .value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stats-inline .stat-box {
+            flex: 0 0 auto;
+        }
+
+        .clear-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .clear-button:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+        }
+
+        .clear-button:active {
+            transform: translateY(0);
+        }
+
+        .save-load-buttons {
+            position: fixed;
+            top: 15px;
+            right: 120px;
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .save-button,
+        .load-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .save-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+
+        .load-button {
+            background: #007bff;
+        }
+
+        .load-button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+        }
+
+        .save-button:active,
+        .load-button:active {
+            transform: translateY(0);
+        }
+
+        .file-input-hidden {
+            display: none;
+        }
+
+        .confirm-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            max-width: 400px;
+            display: none;
+        }
+
+        .confirm-dialog.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .confirm-dialog h3 {
+            margin-bottom: 15px;
+            color: #212529;
+        }
+
+        .confirm-dialog p {
+            margin-bottom: 20px;
+            color: #6c757d;
+        }
+
+        .confirm-dialog-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .confirm-dialog button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .confirm-dialog .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .confirm-dialog .btn-cancel:hover {
+            background: #5a6268;
+        }
+
+        .confirm-dialog .btn-confirm {
+            background: #dc3545;
+            color: white;
+        }
+
+        .confirm-dialog .btn-confirm:hover {
+            background: #c82333;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .names-container {
+            padding: 15px;
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .names-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .date-group {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            margin-bottom: 15px;
+        }
+
+        .date-header {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .date-header::before {
+            content: "📅";
+            font-size: 1.2em;
+        }
+
+        .names-in-date {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .names-in-date {
+                grid-template-columns: 1fr;
+                min-width: 0;
+            }
+            
+            .name-card {
+                width: 100%;
+                min-width: 0;
+            }
+            
+            .header h1 {
+                font-size: 1.4em;
+            }
+            
+            .header p {
+                font-size: 0.8em;
+            }
+            
+            .filters-and-stats {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filters-section {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .filter-item {
+                width: 100%;
+            }
+            
+            .stats-inline {
+                justify-content: space-around;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .names-in-date {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 8px 15px;
+            }
+            
+            .header h1 {
+                font-size: 1.2em;
+                margin-bottom: 3px;
+            }
+            
+            .controls {
+                padding: 8px 10px;
+            }
+            
+            .tabs {
+                gap: 5px;
+            }
+            
+            .tab {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+            
+            .names-container {
+                padding: 10px;
+            }
+        }
+
+        .name-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+            overflow: visible;
+            min-width: 0;
+        }
+
+        .name-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+            z-index: 2;
+            padding: 20px;
+        }
+
+        .name-card.expanded {
+            min-height: auto;
+        }
+
+        .name-card.rated {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+
+
+        .name-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .name-header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .name-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #212529;
+        }
+
+        .name-gender {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .name-gender.Vīrietis {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .name-gender.Sieviete {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .name-gender.Nedefinēts {
+            background: #e2e3e5;
+            color: #41464b;
+        }
+
+        .name-kalendars {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .name-kalendars.tradicionālais {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .name-kalendars.paplašinātais {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .popularity-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            font-weight: bold;
+            opacity: 0.9;
+            z-index: 10;
+        }
+
+        .popularity-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+            display: none;
+        }
+
+        .name-card:hover .popularity-section {
+            display: block;
+        }
+
+        .popularity-section h4 {
+            margin: 0 0 10px 0;
+            color: #667eea;
+            font-size: 1em;
+        }
+
+        .popularity-chart {
+            width: 100%;
+            height: 150px;
+            margin-top: 10px;
+        }
+
+        .name-date {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .name-count {
+            color: #6c757d;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+
+        .rating-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .rating-section label {
+            font-size: 0.9em;
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 2em;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin: 0;
+            font-weight: normal;
+            line-height: 1;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #ffc107;
+        }
+
+        .star-rating input[type="radio"]:checked ~ label {
+            color: #ffc107;
+        }
+
+        .star-rating input[type="radio"]:checked + label ~ label {
+            color: #ffc107;
+        }
+
+        .star-rating input[type="radio"]:checked + label {
+            color: #ffc107;
+        }
+
+        .rating-text {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-left: 10px;
+            min-width: 100px;
+        }
+
+        .save-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+        }
+
+        .save-status.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+            font-size: 1.2em;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #6c757d;
+            font-size: 1.2em;
+        }
+
+        /* Scrollbar styling */
+        .names-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .names-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .names-container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 5px;
+        }
+
+        .names-container::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇱🇻 Latviešu vārdadienas</h1>
+            <p>Vērtē un izpēti latviešu vārdus</p>
+        </div>
+
+        <div class="controls">
+            <div class="tabs" id="tabs">
+                <div class="tab active" data-tab="unrated">
+                    <span>Nevērtētie vārdi</span>
+                    <span class="count" id="unratedCount">0</span>
+                </div>
+                <div class="tab" data-tab="5">
+                    <span>★★★★★</span>
+                    <span class="count" id="count5">0</span>
+                </div>
+                <div class="tab" data-tab="4">
+                    <span>★★★★</span>
+                    <span class="count" id="count4">0</span>
+                </div>
+                <div class="tab" data-tab="3">
+                    <span>★★★</span>
+                    <span class="count" id="count3">0</span>
+                </div>
+                <div class="tab" data-tab="2">
+                    <span>★★</span>
+                    <span class="count" id="count2">0</span>
+                </div>
+                <div class="tab" data-tab="1">
+                    <span>★</span>
+                    <span class="count" id="count1">0</span>
+                </div>
+            </div>
+            <div class="filters-and-stats">
+                <div class="filters-section">
+                    <div class="filter-item">
+                        <label for="genderFilter">Dzimums</label>
+                        <select id="genderFilter">
+                            <option value="all">Visi</option>
+                            <option value="Vīrietis">Vīrietis</option>
+                            <option value="Sieviete">Sieviete</option>
+                            <option value="Nedefinēts">Nedefinēts</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="dateFrom">Datums no</label>
+                        <input type="text" id="dateFrom" placeholder="DD.MM" pattern="\d{2}\.\d{2}">
+                    </div>
+                    <div class="filter-item">
+                        <label for="dateTo">Datums līdz</label>
+                        <input type="text" id="dateTo" placeholder="DD.MM" pattern="\d{2}\.\d{2}">
+                    </div>
+                    <div class="filter-item">
+                        <button id="kalendarsToggle" class="kalendars-toggle" type="button">Paplašinātais kalendārs</button>
+                    </div>
+                </div>
+                <div class="stats-inline">
+                    <div class="stat-box">
+                        <div class="label">Kopā</div>
+                        <div class="value" id="totalNames">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">Filtrēti</div>
+                        <div class="value" id="filteredNames">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="label">Vērtēti</div>
+                        <div class="value" id="ratedNames">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="names-container">
+            <div class="loading" id="loading">Ielādē vārdus...</div>
+            <div class="no-results" id="noResults" style="display: none;">Nav vārdu, kas atbilst pašreizējiem filtriem.</div>
+            <div class="names-grid" id="namesGrid"></div>
+        </div>
+    </div>
+
+    <div class="save-load-buttons">
+        <button class="save-button" id="saveButton" title="Saglabāt vērtējumus failā">💾 Saglabāt</button>
+        <button class="load-button" id="loadButton" title="Ielādēt vērtējumus no faila">📂 Ielādēt</button>
+    </div>
+    <button class="clear-button" id="clearButton" title="Notīrīt visus vērtējumus un filtrus">Notīrīt visu</button>
+    <input type="file" id="loadFileInput" class="file-input-hidden" accept=".json">
+    <div class="save-status" id="saveStatus">✓ Saglabāts!</div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="confirm-dialog" id="confirmDialog">
+        <h3>Notīrīt visus datus?</h3>
+        <p>Tas neatgriezeniski dzēsīs visus jūsu vērtējumus un atiestatīs filtrus. Šo darbību nevar atsaukt.</p>
+        <div class="confirm-dialog-buttons">
+            <button class="btn-cancel" id="cancelClear">Atcelt</button>
+            <button class="btn-confirm" id="confirmClear">Notīrīt visu</button>
+        </div>
+    </div>
+
+    <script>
+        let allNames = [];
+        let ratings = {};
+        let currentTab = 'unrated';
+        let showExpandedCalendar = false; // Default: show only traditional
+
+        // Load data
+        async function loadData() {
+            try {
+                const response = await fetch('name_days_processed.json');
+                allNames = await response.json();
+                loadRatings();
+                renderNames();
+                updateStats();
+            } catch (error) {
+                document.getElementById('loading').textContent = 'Kļūda ielādējot datus. Pārliecinieties, ka name_days_processed.json atrodas tajā pašā mapē.';
+                console.error('Error loading data:', error);
+            }
+        }
+
+        // Load saved ratings from localStorage
+        function loadRatings() {
+            const saved = localStorage.getItem('nameRatings');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                // Convert old format (object with indices) to new format (single number)
+                ratings = {};
+                for (const [key, value] of Object.entries(parsed)) {
+                    if (typeof value === 'object') {
+                        // Old format: find the highest checked rating
+                        const maxRating = Math.max(...Object.keys(value).filter(k => value[k]).map(Number), 0);
+                        ratings[key] = maxRating;
+                    } else {
+                        // New format: already a number
+                        ratings[key] = value;
+                    }
+                }
+            }
+        }
+
+        // Load saved filters from localStorage
+        function loadFilters() {
+            const saved = localStorage.getItem('nameFilters');
+            if (saved) {
+                const filters = JSON.parse(saved);
+                if (filters.showExpandedCalendar !== undefined) {
+                    showExpandedCalendar = filters.showExpandedCalendar;
+                    updateKalendarsButton();
+                }
+                if (filters.gender) {
+                    document.getElementById('genderFilter').value = filters.gender;
+                }
+                if (filters.dateFrom) {
+                    document.getElementById('dateFrom').value = filters.dateFrom;
+                }
+                if (filters.dateTo) {
+                    document.getElementById('dateTo').value = filters.dateTo;
+                }
+                if (filters.currentTab) {
+                    currentTab = filters.currentTab;
+                    // Update tab appearance
+                    document.querySelectorAll('.tab').forEach(tab => {
+                        if (tab.dataset.tab === currentTab) {
+                            tab.classList.add('active');
+                        } else {
+                            tab.classList.remove('active');
+                        }
+                    });
+                }
+            } else {
+                // Default: show only traditional
+                showExpandedCalendar = false;
+                updateKalendarsButton();
+            }
+        }
+
+        // Update kalendārs button appearance
+        function updateKalendarsButton() {
+            const button = document.getElementById('kalendarsToggle');
+            if (showExpandedCalendar) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        }
+
+        // Save filters to localStorage
+        function saveFilters() {
+            const filters = {
+                showExpandedCalendar: showExpandedCalendar,
+                gender: document.getElementById('genderFilter').value,
+                dateFrom: document.getElementById('dateFrom').value,
+                dateTo: document.getElementById('dateTo').value,
+                currentTab: currentTab
+            };
+            localStorage.setItem('nameFilters', JSON.stringify(filters));
+        }
+
+        // Save ratings to localStorage
+        function saveRatings() {
+            localStorage.setItem('nameRatings', JSON.stringify(ratings));
+            showSaveStatus();
+        }
+
+        // Show save status notification
+        function showSaveStatus() {
+            const status = document.getElementById('saveStatus');
+            status.classList.add('show');
+            setTimeout(() => {
+                status.classList.remove('show');
+            }, 2000);
+        }
+
+        // Filter names based on criteria
+        function filterNames() {
+            const genderFilter = document.getElementById('genderFilter').value;
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+
+            let filtered = allNames.filter(name => {
+                // Kalendārs filter: default shows only traditional, button toggles to show all
+                if (!showExpandedCalendar && name.kalendārs !== 'tradicionālais') {
+                    return false;
+                }
+
+                // Gender filter
+                if (genderFilter !== 'all' && name.gender !== genderFilter) {
+                    return false;
+                }
+
+                // Date range filter with year wrapping
+                if (dateFrom || dateTo) {
+                    const nameDate = name.date;
+                    if (!isDateInRange(nameDate, dateFrom, dateTo)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            });
+
+            // Apply tab filter
+            if (currentTab === 'unrated') {
+                // Show only unrated names
+                filtered = filtered.filter(name => {
+                    const key = `${name.name}_${name.date}`;
+                    return !ratings[key] || ratings[key] === 0;
+                });
+            } else {
+                // Show only names with specific rating
+                const ratingValue = parseInt(currentTab);
+                filtered = filtered.filter(name => {
+                    const key = `${name.name}_${name.date}`;
+                    return ratings[key] === ratingValue;
+                });
+            }
+
+            return filtered;
+        }
+
+        // Compare dates in DD.MM format
+        // Returns: negative if date1 < date2, 0 if equal, positive if date1 > date2
+        function compareDates(date1, date2) {
+            const [d1, m1] = date1.split('.').map(Number);
+            const [d2, m2] = date2.split('.').map(Number);
+            
+            if (m1 !== m2) {
+                return m1 - m2;
+            }
+            return d1 - d2;
+        }
+
+        // Check if a date is in range, with year wrapping support
+        function isDateInRange(nameDate, dateFrom, dateTo) {
+            if (!dateFrom && !dateTo) {
+                return true;
+            }
+
+            // If only one boundary is set
+            if (dateFrom && !dateTo) {
+                return compareDates(nameDate, dateFrom) >= 0;
+            }
+            if (!dateFrom && dateTo) {
+                return compareDates(nameDate, dateTo) <= 0;
+            }
+
+            // Both boundaries are set - check if range wraps around year
+            const fromCompare = compareDates(dateFrom, dateTo);
+            
+            if (fromCompare <= 0) {
+                // Normal range (doesn't wrap): dateFrom <= dateTo
+                // Example: 01.01 to 31.12
+                return compareDates(nameDate, dateFrom) >= 0 && 
+                       compareDates(nameDate, dateTo) <= 0;
+            } else {
+                // Wrapping range: dateFrom > dateTo
+                // Example: 15.06 to 15.02
+                // Include: dates >= dateFrom OR dates <= dateTo
+                return compareDates(nameDate, dateFrom) >= 0 || 
+                       compareDates(nameDate, dateTo) <= 0;
+            }
+        }
+
+        // Render names grouped by date
+        function renderNames() {
+            const filtered = filterNames();
+            const grid = document.getElementById('namesGrid');
+            const loading = document.getElementById('loading');
+            const noResults = document.getElementById('noResults');
+
+            loading.style.display = 'none';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+                
+                // Group names by date
+                const groupedByDate = {};
+                filtered.forEach(name => {
+                    if (!groupedByDate[name.date]) {
+                        groupedByDate[name.date] = [];
+                    }
+                    groupedByDate[name.date].push(name);
+                });
+
+                // If on unrated tab, filter out dates where all names are rated
+                let datesToShow = Object.keys(groupedByDate);
+                if (currentTab === 'unrated') {
+                    datesToShow = datesToShow.filter(date => {
+                        const namesForDate = groupedByDate[date];
+                        // Check if all names in this date are rated
+                        const allRated = namesForDate.every(name => {
+                            const key = `${name.name}_${name.date}`;
+                            return ratings[key] && ratings[key] > 0;
+                        });
+                        // Only show dates that have at least one unrated name
+                        return !allRated;
+                    });
+                }
+
+                // Sort dates chronologically
+                const sortedDates = datesToShow.sort((a, b) => {
+                    const [d1, m1] = a.split('.').map(Number);
+                    const [d2, m2] = b.split('.').map(Number);
+                    if (m1 !== m2) return m1 - m2;
+                    return d1 - d2;
+                });
+
+                // Create HTML for each date group
+                grid.innerHTML = sortedDates.map(date => {
+                    const namesForDate = groupedByDate[date];
+                    const namesHtml = namesForDate.map(name => createNameCard(name)).join('');
+                    return `
+                        <div class="date-group">
+                            <div class="date-header">${date}</div>
+                            <div class="names-in-date">
+                                ${namesHtml}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                
+                // Attach event listeners and draw charts
+                filtered.forEach(name => {
+                    const key = `${name.name}_${name.date}`;
+                    for (let starValue = 1; starValue <= 5; starValue++) {
+                        const radio = document.getElementById(`rating_${key}_${starValue}`);
+                        if (radio) {
+                            radio.addEventListener('change', () => handleRatingChange(name, starValue));
+                        }
+                    }
+                    
+                    // Draw popularity chart if data exists
+                    if (hasPopularityData(name)) {
+                        const canvasId = `chart_${key.replace(/[^a-zA-Z0-9]/g, '_')}`;
+                        const card = document.querySelector(`[id^="rating_${key}_"]`).closest('.name-card');
+                        if (card) {
+                            // Draw chart when card is hovered
+                            card.addEventListener('mouseenter', () => {
+                                setTimeout(() => {
+                                    createPopularityChart(name, canvasId);
+                                }, 50);
+                            });
+                        }
+                    }
+                });
+            }
+
+            updateStats();
+        }
+
+
+        // Check if popularity data has non-zero values
+        function hasPopularityData(name) {
+            if (!name.popularity) return false;
+            return Object.values(name.popularity).some(value => value > 0);
+        }
+
+        // Create name card HTML
+        function createNameCard(name) {
+            const key = `${name.name}_${name.date}`;
+            const rating = ratings[key] || 0;
+            const ratingClass = rating > 0 ? 'rated' : '';
+
+            const stars = [5, 4, 3, 2, 1].map(starValue => {
+                const checked = rating === starValue ? 'checked' : '';
+                return `
+                    <input type="radio" name="rating_${key}" id="rating_${key}_${starValue}" value="${starValue}" ${checked}>
+                    <label for="rating_${key}_${starValue}">★</label>
+                `;
+            }).join('');
+
+            const ratingText = rating > 0 ? `${rating} ${rating === 1 ? 'zvaigzne' : 'zvaigznes'}` : 'Nav vērtēts';
+
+            const kalendarsLabel = name.kalendārs || 'paplašinātais';
+            const hasPopularity = hasPopularityData(name);
+            const canvasId = `chart_${key.replace(/[^a-zA-Z0-9]/g, '_')}`;
+            
+            const popularityIndicator = hasPopularity ? '<div class="popularity-indicator" title="Hover to see popularity chart">📊</div>' : '';
+            const popularitySection = hasPopularity ? `
+                <div class="popularity-section">
+                    <h4>Popularitāte laika gaitā</h4>
+                    <canvas class="popularity-chart" id="${canvasId}" width="350" height="150"></canvas>
+                </div>
+            ` : '';
+            
+            return `
+                <div class="name-card ${ratingClass}">
+                    ${popularityIndicator}
+                    <div class="name-header">
+                        <div class="name-title">${name.name}</div>
+                        <div class="name-header-right">
+                            <div class="name-gender ${name.gender}">${name.gender}</div>
+                            <div class="name-kalendars ${kalendarsLabel}">${kalendarsLabel}</div>
+                        </div>
+                    </div>
+                    <div class="name-date">📅 Datums: ${name.date}</div>
+                    <div class="name-count">👥 Skaits: ${name.count || 0}</div>
+                    <div class="rating-section">
+                        <label>Vērtē šo vārdu (1 = mazāk patīk, 5 = ļoti patīk):</label>
+                        <div class="star-rating">
+                            ${stars}
+                            <span class="rating-text">${ratingText}</span>
+                        </div>
+                    </div>
+                    ${popularitySection}
+                </div>
+            `;
+        }
+
+        // Handle rating change
+        function handleRatingChange(name, starValue) {
+            const key = `${name.name}_${name.date}`;
+            ratings[key] = starValue;
+            saveRatings();
+            
+            // Update card appearance and rating text
+            const card = document.querySelector(`[id^="rating_${key}_"]`).closest('.name-card');
+            if (starValue > 0) {
+                card.classList.add('rated');
+            } else {
+                card.classList.remove('rated');
+            }
+            
+            // Update rating text
+            const ratingText = card.querySelector('.rating-text');
+            if (ratingText) {
+                ratingText.textContent = `${starValue} ${starValue === 1 ? 'zvaigzne' : 'zvaigznes'}`;
+            }
+            
+            // If we're on unrated tab and name gets rated, remove it from view
+            if (currentTab === 'unrated' && starValue > 0) {
+                card.style.display = 'none';
+                
+                // Check if the date group still has any visible (unrated) names
+                const dateGroup = card.closest('.date-group');
+                if (dateGroup) {
+                    const namesInDate = dateGroup.querySelectorAll('.name-card');
+                    let hasVisibleCards = false;
+                    
+                    namesInDate.forEach(nameCard => {
+                        // Check if card is visible (not hidden)
+                        if (nameCard.style.display !== 'none' && nameCard.offsetParent !== null) {
+                            hasVisibleCards = true;
+                        }
+                    });
+                    
+                    // If no visible cards remain in this date group, hide the date group
+                    if (!hasVisibleCards) {
+                        dateGroup.style.display = 'none';
+                    }
+                }
+            }
+            
+            // If we're on a rating tab and name rating changes, update view
+            if (currentTab !== 'unrated') {
+                const expectedRating = parseInt(currentTab);
+                if (starValue !== expectedRating) {
+                    card.style.display = 'none';
+                }
+            }
+            
+            updateStats();
+        }
+
+        // Update statistics
+        function updateStats() {
+            const filtered = filterNames();
+            const ratedCount = Object.values(ratings).filter(r => r > 0).length;
+            
+            document.getElementById('totalNames').textContent = allNames.length;
+            document.getElementById('filteredNames').textContent = filtered.length;
+            document.getElementById('ratedNames').textContent = ratedCount;
+
+            // Update tab counts
+            const unratedCount = allNames.filter(name => {
+                const key = `${name.name}_${name.date}`;
+                return !ratings[key] || ratings[key] === 0;
+            }).length;
+            document.getElementById('unratedCount').textContent = unratedCount;
+
+            // Count names by rating
+            for (let i = 1; i <= 5; i++) {
+                const count = allNames.filter(name => {
+                    const key = `${name.name}_${name.date}`;
+                    return ratings[key] === i;
+                }).length;
+                document.getElementById(`count${i}`).textContent = count;
+            }
+        }
+
+        // Handle tab switching
+        function switchTab(tabName) {
+            currentTab = tabName;
+            saveFilters(); // Save current tab
+            
+            // Update tab appearance
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            // Re-render names
+            renderNames();
+        }
+
+        // Event listeners for filters
+        document.getElementById('kalendarsToggle').addEventListener('click', () => {
+            showExpandedCalendar = !showExpandedCalendar;
+            updateKalendarsButton();
+            saveFilters();
+            renderNames();
+        });
+        document.getElementById('genderFilter').addEventListener('change', () => {
+            saveFilters();
+            renderNames();
+        });
+        document.getElementById('dateFrom').addEventListener('input', () => {
+            saveFilters();
+            renderNames();
+        });
+        document.getElementById('dateTo').addEventListener('input', () => {
+            saveFilters();
+            renderNames();
+        });
+
+        // Event listeners for tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchTab(tab.dataset.tab);
+            });
+        });
+
+        // Clear all data
+        function showClearDialog() {
+            const dialog = document.getElementById('confirmDialog');
+            const overlay = document.getElementById('overlay');
+            dialog.classList.add('show');
+            overlay.classList.add('show');
+        }
+
+        function hideClearDialog() {
+            const dialog = document.getElementById('confirmDialog');
+            const overlay = document.getElementById('overlay');
+            dialog.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+
+        function clearAllData() {
+            // Clear ratings
+            ratings = {};
+            localStorage.removeItem('nameRatings');
+            
+            // Clear filters
+            showExpandedCalendar = false;
+            updateKalendarsButton();
+            document.getElementById('genderFilter').value = 'all';
+            document.getElementById('dateFrom').value = '';
+            document.getElementById('dateTo').value = '';
+            currentTab = 'unrated';
+            localStorage.removeItem('nameFilters');
+            
+            // Update tab appearance
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.dataset.tab === 'unrated') {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // Re-render
+            renderNames();
+            hideClearDialog();
+            
+            // Show confirmation
+            const status = document.getElementById('saveStatus');
+            status.textContent = '✓ Visi dati notīrīti!';
+            status.style.background = '#dc3545';
+            status.classList.add('show');
+            setTimeout(() => {
+                status.classList.remove('show');
+                status.style.background = '#28a745';
+                status.textContent = '✓ Saglabāts!';
+            }, 3000);
+        }
+
+        // Event listeners for clear button
+        document.getElementById('clearButton').addEventListener('click', showClearDialog);
+        document.getElementById('cancelClear').addEventListener('click', hideClearDialog);
+        document.getElementById('confirmClear').addEventListener('click', clearAllData);
+        document.getElementById('overlay').addEventListener('click', hideClearDialog);
+
+
+        // Create popularity chart
+        function createPopularityChart(name, canvasId) {
+            if (!name.popularity || !hasPopularityData(name)) return '';
+
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return '';
+
+            const ctx = canvas.getContext('2d');
+            
+            // Get all years from popularity data
+            const allYears = Object.keys(name.popularity).sort((a, b) => parseInt(a) - parseInt(b));
+            const fullYearRange = allYears;
+            
+            // Get years with data > 0 for plotting
+            const yearsWithData = allYears.filter(year => (name.popularity[year] || 0) > 0);
+            
+            if (yearsWithData.length === 0) return '';
+            
+            // Fixed scale: always 1 at top, 100 at bottom for comparability
+            const fixedMin = 1;
+            const fixedMax = 100;
+            const fixedRange = fixedMax - fixedMin;
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const padding = 40;
+            const chartWidth = width - padding * 2;
+            const chartHeight = height - padding * 2;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw grid lines
+            ctx.strokeStyle = '#e9ecef';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 4; i++) {
+                const y = padding + (chartHeight / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(width - padding, y);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            ctx.strokeStyle = '#495057';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, height - padding);
+            ctx.lineTo(width - padding, height - padding);
+            ctx.stroke();
+
+            // Draw line chart (inverted: 1 at top, 100 at bottom)
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            let hasMoved = false;
+            yearsWithData.forEach((year) => {
+                const yearIndex = fullYearRange.indexOf(year);
+                const x = padding + (chartWidth / (fullYearRange.length - 1)) * yearIndex;
+                
+                // Inverted: 1 at top (padding), 100 at bottom (height - padding)
+                const value = name.popularity[year];
+                const clampedValue = Math.max(fixedMin, Math.min(fixedMax, value));
+                const normalizedValue = (clampedValue - fixedMin) / fixedRange;
+                const y = padding + normalizedValue * chartHeight;
+                
+                if (!hasMoved) {
+                    ctx.moveTo(x, y);
+                    hasMoved = true;
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Draw points
+            ctx.fillStyle = '#667eea';
+            yearsWithData.forEach((year) => {
+                const yearIndex = fullYearRange.indexOf(year);
+                const x = padding + (chartWidth / (fullYearRange.length - 1)) * yearIndex;
+                const value = name.popularity[year];
+                const clampedValue = Math.max(fixedMin, Math.min(fixedMax, value));
+                const normalizedValue = (clampedValue - fixedMin) / fixedRange;
+                const y = padding + normalizedValue * chartHeight;
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Draw year labels (show first, middle, and last year)
+            ctx.fillStyle = '#6c757d';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'center';
+            const labelYears = [
+                fullYearRange[0],
+                fullYearRange[Math.floor(fullYearRange.length / 2)],
+                fullYearRange[fullYearRange.length - 1]
+            ];
+            
+            labelYears.forEach(year => {
+                const yearIndex = fullYearRange.indexOf(year);
+                const x = padding + (chartWidth / (fullYearRange.length - 1)) * yearIndex;
+                ctx.fillText(year, x, height - padding + 20);
+            });
+
+            // Draw value labels on y-axis (inverted: 1 at top, 100 at bottom)
+            ctx.textAlign = 'right';
+            ctx.fillText('1', padding - 10, padding + 5);
+            ctx.fillText('100', padding - 10, height - padding + 5);
+        }
+
+        // Save ratings to file
+        function saveRatingsToFile() {
+            const dataStr = JSON.stringify(ratings, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'name_ratings.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            // Show save status
+            const status = document.getElementById('saveStatus');
+            status.textContent = '✓ Vērtējumi saglabāti failā!';
+            status.style.background = '#28a745';
+            status.classList.add('show');
+            setTimeout(() => {
+                status.classList.remove('show');
+                status.textContent = '✓ Saglabāts!';
+            }, 3000);
+        }
+
+        // Load ratings from file
+        function loadRatingsFromFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const loadedRatings = JSON.parse(e.target.result);
+                    
+                    // Validate that it's a valid ratings object
+                    if (typeof loadedRatings === 'object' && loadedRatings !== null) {
+                        // Merge with existing ratings (loaded ratings take precedence)
+                        ratings = { ...ratings, ...loadedRatings };
+                        saveRatings(); // Save to localStorage
+                        
+                        // Re-render to show updated ratings
+                        renderNames();
+                        updateStats();
+                        
+                        // Show success status
+                        const status = document.getElementById('saveStatus');
+                        status.textContent = '✓ Vērtējumi ielādēti no faila!';
+                        status.style.background = '#007bff';
+                        status.classList.add('show');
+                        setTimeout(() => {
+                            status.classList.remove('show');
+                            status.textContent = '✓ Saglabāts!';
+                            status.style.background = '#28a745';
+                        }, 3000);
+                    } else {
+                        throw new Error('Invalid file format');
+                    }
+                } catch (error) {
+                    alert('Kļūda ielādējot failu: ' + error.message + '\nLūdzu, pārliecinieties, ka fails ir derīgs JSON vērtējumu fails.');
+                }
+                
+                // Reset file input
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // Event listeners for save/load buttons
+        document.getElementById('saveButton').addEventListener('click', saveRatingsToFile);
+        document.getElementById('loadButton').addEventListener('click', () => {
+            document.getElementById('loadFileInput').click();
+        });
+        document.getElementById('loadFileInput').addEventListener('change', loadRatingsFromFile);
+
+        // Export ratings function (can be called from browser console)
+        window.exportRatings = function() {
+            saveRatingsToFile();
+        };
+
+        // Initialize
+        loadFilters(); // Load saved filters first
+        loadData();
+    </script>
+</body>
+</html>
+
