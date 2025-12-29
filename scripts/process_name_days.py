@@ -93,6 +93,31 @@ def load_gender_data(gender_file: str) -> Dict[str, Dict[str, Any]]:
         return {}
 
 
+def clean_name(name: str) -> str:
+    """
+    Clean name by removing unwanted symbols and text.
+
+    Args:
+        name: The name to clean
+
+    Returns:
+        Cleaned name string
+    """
+    if not name:
+        return ""
+
+    # Remove specific symbols: . ( ) :
+    cleaned = name.replace(".", "").replace("(", "").replace(")", "").replace(":", "")
+
+    # Remove "LTG" (case-insensitive)
+    cleaned = cleaned.replace("LTG", "")
+
+    # Remove any extra whitespace
+    cleaned = cleaned.strip()
+
+    return cleaned
+
+
 def determine_gender_by_rules(name: str) -> str:
     """
     Determine gender based on name ending rules.
@@ -375,6 +400,12 @@ def process_name_days(
 
                     # Create an entry for each name with gender, count, and popularity
                     for name in names:
+                        # Clean name before processing
+                        name = clean_name(name)
+
+                        # Skip empty names after cleaning
+                        if not name:
+                            continue
 
                         gender = get_gender(name, gender_lookup)
                         count = get_count(name, gender_lookup)

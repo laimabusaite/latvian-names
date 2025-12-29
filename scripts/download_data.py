@@ -17,7 +17,7 @@ def download_csv(url: str, filename: str) -> None:
     """
     # Ensure directory exists
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    
+
     try:
         print(f"Downloading from: {url}")
         response = requests.get(url, timeout=30)
