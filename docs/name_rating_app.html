@@ -1392,12 +1392,40 @@
                 await auth.signOut();
                 currentUser = null;
                 document.getElementById('userInfo').style.display = 'none';
+                
+                // Clear all data on logout
+                ratings = {};
+                localStorage.removeItem('nameRatings');
+                
+                // Clear filters
+                showExpandedCalendar = false;
+                updateKalendarsButton();
+                document.getElementById('genderFilter').value = 'all';
+                document.getElementById('dateFrom').value = '';
+                document.getElementById('dateTo').value = '';
+                currentTab = 'unrated';
+                localStorage.removeItem('nameFilters');
+                saveFilters();
+                
+                // Update tab appearance
+                document.querySelectorAll('.tab').forEach(tab => {
+                    if (tab.dataset.tab === 'unrated') {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
+                });
+                
+                // Re-render everything
+                renderNames();
+                updateStats();
+                
                 // Show login button if Firebase is configured
                 if (isFirebaseConfigured) {
                     document.getElementById('loginButton').style.display = 'block';
+                    // Show login modal after logout
+                    showLoginModal();
                 }
-                // Keep ratings in localStorage as backup
-                // Don't automatically show login modal - let user choose
             } catch (error) {
                 console.error('Logout error:', error);
             }
