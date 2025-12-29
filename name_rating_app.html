@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html lang="lv">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Latviešu vārdadienas - Vērtēšanas lietotne</title>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -42,7 +38,6 @@
             padding: 10px 20px;
             text-align: center;
             flex-shrink: 0;
-            position: relative;
         }
 
         .header h1 {
@@ -369,335 +364,6 @@
             background: #c82333;
         }
 
-        /* Login Modal Styles */
-        .login-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            z-index: 3000;
-            max-width: 400px;
-            width: 90%;
-            display: none;
-        }
-
-        .login-modal.show {
-            display: block;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .login-modal h2 {
-            margin-bottom: 20px;
-            color: #667eea;
-            text-align: center;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .login-form input {
-            padding: 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-
-        .login-form input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .login-form button {
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .login-form .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .login-form .btn-primary:hover {
-            background: #764ba2;
-        }
-
-        .login-form .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .login-form .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        .login-form .error-message {
-            color: #dc3545;
-            font-size: 0.9em;
-            text-align: center;
-            display: none;
-        }
-
-        .login-form .error-message.show {
-            display: block;
-        }
-
-        .auth-divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #dee2e6;
-        }
-
-        .auth-divider span {
-            padding: 0 15px;
-        }
-
-        .auth-providers {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-google {
-            background: white;
-            color: #495057;
-            border: 2px solid #dee2e6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-google:hover {
-            background: #f8f9fa;
-            border-color: #667eea;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-google img {
-            width: 20px;
-            height: 20px;
-        }
-
-        .btn-anonymous {
-            background: #6c757d;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-anonymous:hover {
-            background: #5a6268;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-skip {
-            background: transparent;
-            color: #6c757d;
-            border: 2px solid #dee2e6;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-skip:hover {
-            background: #f8f9fa;
-            border-color: #6c757d;
-            color: #495057;
-        }
-
-        .login-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .login-close {
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            color: #6c757d;
-            cursor: pointer;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-
-        .login-close:hover {
-            background: #f8f9fa;
-            color: #495057;
-        }
-
-        .login-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .login-tab {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .login-tab.active {
-            background: #667eea;
-            color: white;
-            border-color: #667eea;
-        }
-
-        .user-info {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .user-info .user-email {
-            color: #495057;
-            font-weight: 600;
-            font-style: italic;
-        }
-
-        .user-info .user-email.anonymous {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-
-        .user-info .logout-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .user-info .logout-btn:hover {
-            background: #c82333;
-        }
-
-        .login-button {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-        }
-
-        .login-button:hover {
-            background: #764ba2;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .sync-status {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #28a745;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.85em;
-            z-index: 100;
-            display: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .sync-status.show {
-            display: block;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        .sync-status.syncing {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .sync-status.error {
-            background: #dc3545;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
         .overlay {
             position: fixed;
             top: 0;
@@ -705,7 +371,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 2999;
+            z-index: 1999;
             display: none;
         }
 
@@ -1183,59 +849,6 @@
     <input type="file" id="loadFileInput" class="file-input-hidden" accept=".json">
     <div class="save-status" id="saveStatus">✓ Saglabāts!</div>
 
-    <!-- Login Modal -->
-    <div class="overlay" id="loginOverlay"></div>
-    <div class="login-modal" id="loginModal">
-        <div class="login-header">
-            <h2 style="margin: 0;">🔐 Pieteikšanās (nav obligāta)</h2>
-            <button class="login-close" id="closeLoginModal" title="Aizvērt">×</button>
-        </div>
-        <p style="text-align: center; color: #6c757d; font-size: 0.9em; margin-bottom: 20px;">
-            Pieteikšanās ļauj sinhronizēt jūsu vērtējumus starp ierīcēm. Varat turpināt bez pieteikšanās.
-        </p>
-        <div class="login-tabs">
-            <div class="login-tab active" id="loginTab">Pieteikties</div>
-            <div class="login-tab" id="registerTab">Reģistrēties</div>
-        </div>
-        <form class="login-form" id="authForm">
-            <input type="email" id="authEmail" placeholder="E-pasta adrese" required>
-            <input type="password" id="authPassword" placeholder="Parole" required>
-            <div class="error-message" id="authError"></div>
-            <button type="submit" class="btn-primary" id="authSubmit">Pieteikties</button>
-        </form>
-        <div class="auth-divider">
-            <span>vai</span>
-        </div>
-        <div class="auth-providers">
-            <button type="button" class="btn-google" id="googleSignInBtn">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-                Turpināt ar Google
-            </button>
-        </div>
-        <button type="button" class="btn-skip" id="skipLoginBtn">
-            Turpināt bez pieteikšanās
-        </button>
-    </div>
-
-    <!-- User Info -->
-    <div class="user-info" id="userInfo" style="display: none;">
-        <span class="user-email" id="userEmail"></span>
-        <button class="logout-btn" id="logoutBtn">Iziet</button>
-    </div>
-
-    <!-- Login Button (shown when not logged in) -->
-    <button class="login-button" id="loginButton" style="display: none;" title="Pieteikties, lai sinhronizētu datus">
-        🔐 Pieteikties
-    </button>
-
-    <!-- Sync Status -->
-    <div class="sync-status" id="syncStatus"></div>
-
     <div class="overlay" id="overlay"></div>
     <div class="confirm-dialog" id="confirmDialog">
         <h3>Notīrīt visus datus?</h3>
@@ -1247,52 +860,17 @@
     </div>
 
     <script>
-        // Firebase Configuration
-        // TODO: Replace with your Firebase config
-        const firebaseConfig = {
-            apiKey: "AIzaSyBEuFsrEN1icVV8vwa87qLTCkrBOj2rp_k",
-            authDomain: "latvian-names.firebaseapp.com",
-            projectId: "latvian-names",
-            storageBucket: "latvian-names.firebasestorage.app",
-            messagingSenderId: "940857971114",
-            appId: "1:940857971114:web:97c6d41411999d3024dbd3",
-            measurementId: "G-NY72STKF6J"
-        };
-
-        // Initialize Firebase
-        let firebaseApp, auth, db;
-        let currentUser = null;
-        let isFirebaseConfigured = false;
-
-        try {
-            if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                firebaseApp = firebase.initializeApp(firebaseConfig);
-                auth = firebase.auth();
-                db = firebase.firestore();
-                isFirebaseConfigured = true;
-                console.log('Firebase initialized successfully');
-            } else {
-                console.log('Firebase not configured - using localStorage only');
-            }
-        } catch (error) {
-            console.warn('Firebase not configured:', error);
-        }
-
         let allNames = [];
         let ratings = {};
         let currentTab = 'unrated';
         let showExpandedCalendar = false; // Default: show only traditional
-        let isLoginMode = true; // true = login, false = register
 
         // Load data
         async function loadData() {
             try {
                 const response = await fetch('name_days_processed.json');
                 allNames = await response.json();
-                // Load ratings from localStorage (Firebase will sync if configured)
-                if (!isFirebaseConfigured || !currentUser) {
-                    loadRatings();
-                }
+                loadRatings();
                 renderNames();
                 updateStats();
             } catch (error) {
@@ -1301,186 +879,7 @@
             }
         }
 
-        // Firebase Authentication Functions
-        function showLoginModal() {
-            if (!isFirebaseConfigured) {
-                // If Firebase not configured, skip login and use localStorage only
-                return;
-            }
-            document.getElementById('loginModal').classList.add('show');
-            document.getElementById('loginOverlay').style.display = 'block';
-        }
-
-        function hideLoginModal() {
-            document.getElementById('loginModal').classList.remove('show');
-            document.getElementById('loginOverlay').style.display = 'none';
-        }
-
-        function skipLogin() {
-            // User chooses to continue without login
-            hideLoginModal();
-            // Load from localStorage
-            loadRatings();
-            if (allNames.length > 0) {
-                renderNames();
-                updateStats();
-            }
-        }
-
-        function showError(message) {
-            const errorEl = document.getElementById('authError');
-            errorEl.textContent = message;
-            errorEl.classList.add('show');
-            setTimeout(() => errorEl.classList.remove('show'), 5000);
-        }
-
-        async function handleAuth(event) {
-            event.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            const password = document.getElementById('authPassword').value;
-
-            try {
-                if (isLoginMode) {
-                    await auth.signInWithEmailAndPassword(email, password);
-                } else {
-                    await auth.createUserWithEmailAndPassword(email, password);
-                }
-                hideLoginModal();
-                await loadRatingsFromFirebase();
-            } catch (error) {
-                showError(error.message || 'Kļūda autentificējoties');
-            }
-        }
-
-        // Google Sign-In
-        async function handleGoogleSignIn() {
-            try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
-                hideLoginModal();
-                await loadRatingsFromFirebase();
-            } catch (error) {
-                if (error.code === 'auth/popup-closed-by-user') {
-                    // User closed the popup, don't show error
-                    return;
-                }
-                showError(error.message || 'Kļūda autentificējoties ar Google');
-            }
-        }
-
-        async function handleLogout() {
-            try {
-                await auth.signOut();
-                currentUser = null;
-                document.getElementById('userInfo').style.display = 'none';
-                // Show login button if Firebase is configured
-                if (isFirebaseConfigured) {
-                    document.getElementById('loginButton').style.display = 'block';
-                }
-                // Keep ratings in localStorage as backup
-                // Don't automatically show login modal - let user choose
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        }
-
-        function showSyncStatus(message, type = 'success') {
-            const status = document.getElementById('syncStatus');
-            status.textContent = message;
-            status.className = `sync-status show ${type}`;
-            setTimeout(() => {
-                status.classList.remove('show');
-            }, 3000);
-        }
-
-        // Save ratings to Firebase
-        async function saveRatingsToFirebase() {
-            if (!isFirebaseConfigured || !currentUser) return;
-
-            try {
-                showSyncStatus('Sinhronizē...', 'syncing');
-                await db.collection('userRatings').doc(currentUser.uid).set({
-                    ratings: ratings,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showSyncStatus('✓ Sinhronizēts ar mākoņu!');
-            } catch (error) {
-                console.error('Error saving to Firebase:', error);
-                showSyncStatus('Kļūda sinhronizējot', 'error');
-            }
-        }
-
-        // Load ratings from Firebase
-        async function loadRatingsFromFirebase() {
-            if (!isFirebaseConfigured || !currentUser) return;
-
-            try {
-                const doc = await db.collection('userRatings').doc(currentUser.uid).get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    if (data.ratings) {
-                        ratings = data.ratings;
-                        // Also save to localStorage as backup
-                        localStorage.setItem('nameRatings', JSON.stringify(ratings));
-                        renderNames();
-                        updateStats();
-                        showSyncStatus('✓ Dati ielādēti no mākoņa!');
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading from Firebase:', error);
-                showSyncStatus('Kļūda ielādējot no mākoņa', 'error');
-            }
-        }
-
-        // Auth state listener
-        if (isFirebaseConfigured) {
-            auth.onAuthStateChanged(async (user) => {
-                console.log('Auth state changed:', user ? 'User logged in' : 'No user');
-                currentUser = user;
-                if (user) {
-                    // Display user info (email for regular users, "Anonīms lietotājs" for anonymous)
-                    const userEmailEl = document.getElementById('userEmail');
-                    if (user.isAnonymous) {
-                        userEmailEl.textContent = 'Anonīms lietotājs';
-                        userEmailEl.classList.add('anonymous');
-                    } else {
-                        userEmailEl.classList.remove('anonymous');
-                        if (user.email) {
-                            userEmailEl.textContent = user.email;
-                        } else {
-                            // Fallback for users without email
-                            userEmailEl.textContent = user.displayName || 'Lietotājs';
-                        }
-                    }
-                    document.getElementById('userInfo').style.display = 'flex';
-                    document.getElementById('loginButton').style.display = 'none';
-                    hideLoginModal();
-                    await loadRatingsFromFirebase();
-                    // Re-render after loading from Firebase
-                    if (allNames.length > 0) {
-                        renderNames();
-                        updateStats();
-                    }
-                } else {
-                    document.getElementById('userInfo').style.display = 'none';
-                    // Show login button if Firebase is configured
-                    document.getElementById('loginButton').style.display = 'block';
-                    // Load from localStorage as fallback
-                    loadRatings();
-                    if (allNames.length > 0) {
-                        renderNames();
-                        updateStats();
-                    }
-                    // Don't automatically show login modal - let user choose
-                }
-            });
-        } else {
-            // Firebase not configured - ensure login button is hidden
-            document.getElementById('loginButton').style.display = 'none';
-        }
-
-        // Load saved ratings from localStorage (fallback)
+        // Load saved ratings from localStorage
         function loadRatings() {
             const saved = localStorage.getItem('nameRatings');
             if (saved) {
@@ -1558,14 +957,10 @@
             localStorage.setItem('nameFilters', JSON.stringify(filters));
         }
 
-        // Save ratings to localStorage and Firebase
+        // Save ratings to localStorage
         function saveRatings() {
             localStorage.setItem('nameRatings', JSON.stringify(ratings));
             showSaveStatus();
-            // Also save to Firebase if logged in
-            if (isFirebaseConfigured && currentUser) {
-                saveRatingsToFirebase();
-            }
         }
 
         // Show save status notification
@@ -1957,19 +1352,10 @@
             overlay.classList.remove('show');
         }
 
-        async function clearAllData() {
+        function clearAllData() {
             // Clear ratings
             ratings = {};
             localStorage.removeItem('nameRatings');
-            
-            // Clear from Firebase if logged in
-            if (isFirebaseConfigured && currentUser) {
-                try {
-                    await db.collection('userRatings').doc(currentUser.uid).delete();
-                } catch (error) {
-                    console.error('Error clearing Firebase data:', error);
-                }
-            }
             
             // Clear filters
             showExpandedCalendar = false;
@@ -2202,73 +1588,9 @@
             saveRatingsToFile();
         };
 
-        // Login/Register tab switching
-        document.getElementById('loginTab').addEventListener('click', () => {
-            isLoginMode = true;
-            document.getElementById('loginTab').classList.add('active');
-            document.getElementById('registerTab').classList.remove('active');
-            document.getElementById('authSubmit').textContent = 'Pieteikties';
-        });
-
-        document.getElementById('registerTab').addEventListener('click', () => {
-            isLoginMode = false;
-            document.getElementById('registerTab').classList.add('active');
-            document.getElementById('loginTab').classList.remove('active');
-            document.getElementById('authSubmit').textContent = 'Reģistrēties';
-        });
-
-        // Auth form submission
-        document.getElementById('authForm').addEventListener('submit', handleAuth);
-
-        // Google Sign-In button
-        document.getElementById('googleSignInBtn').addEventListener('click', handleGoogleSignIn);
-
-        // Logout button
-        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-
-        // Close login modal on overlay click
-        document.getElementById('loginOverlay').addEventListener('click', () => {
-            hideLoginModal();
-        });
-
-        // Close login modal button
-        document.getElementById('closeLoginModal').addEventListener('click', () => {
-            hideLoginModal();
-        });
-
-        // Skip login button
-        document.getElementById('skipLoginBtn').addEventListener('click', skipLogin);
-
-        // Login button (shown when not logged in)
-        document.getElementById('loginButton').addEventListener('click', () => {
-            if (isFirebaseConfigured) {
-                showLoginModal();
-            }
-        });
-
         // Initialize
         loadFilters(); // Load saved filters first
-        loadData(); // Load data (ratings will be loaded by auth state listener or from localStorage)
-        
-        // Ensure login button visibility after a short delay (in case auth state hasn't fired yet)
-        if (isFirebaseConfigured) {
-            setTimeout(() => {
-                const loginButton = document.getElementById('loginButton');
-                const userInfo = document.getElementById('userInfo');
-                // If user is not logged in and button exists, show it
-                if (loginButton && !currentUser && userInfo.style.display !== 'flex') {
-                    loginButton.style.display = 'block';
-                    console.log('Login button shown via fallback');
-                } else {
-                    console.log('Login button check:', {
-                        buttonExists: !!loginButton,
-                        currentUser: !!currentUser,
-                        userInfoVisible: userInfo.style.display === 'flex',
-                        buttonDisplay: loginButton ? loginButton.style.display : 'N/A'
-                    });
-                }
-            }, 1000);
-        }
+        loadData();
     </script>
 </body>
 </html>

@@ -47,14 +47,24 @@ Atveriet `docs/name_rating_app.html` pārlūkprogrammā vai izmantojiet GitHub P
 
 ### Automātiskā izvietošana (ieteicams)
 
-Projekts ietver GitHub Actions darbplūsmu, kas automātiski izvieto lietotni GitHub Pages, kad tiek veiktas izmaiņas `main` branch.
+Projekts ietver GitHub Actions darbplūsmu (`.github/workflows/pages.yml`), kas **automātiski izvieto lietotni GitHub Pages, kad tiek veiktas izmaiņas `main` branch**.
 
+**Sākotnējā iestatīšana**:
 1. Dodieties uz repository Settings
 2. Skatiet sadaļu "Pages"
 3. Izvēlieties "Source": "GitHub Actions"
 4. Saglabājiet
 
-### Manuālā izvietošana
+**Kā tas darbojas**:
+- Katru reizi, kad veicat `git push` uz `main` branch, GitHub Actions automātiski:
+  - Izvieto saturu no `/docs` mapes
+  - Atjaunina GitHub Pages
+- Nav nepieciešama manuāla darbība pēc sākotnējās iestatīšanas
+- Izmaiņas parasti ir redzamas 1-2 minūtēs pēc push
+
+### Manuālā izvietošana (alternatīva)
+
+Ja nevēlaties izmantot GitHub Actions:
 
 1. Dodieties uz repository Settings
 2. Skatiet sadaļu "Pages"
@@ -62,6 +72,8 @@ Projekts ietver GitHub Actions darbplūsmu, kas automātiski izvieto lietotni Gi
 4. Izvēlieties branch: `main` (vai `master`)
 5. Izvēlieties folder: `/docs`
 6. Saglabājiet
+
+**Piezīme**: Ar manuālo izvietošanu izmaiņas arī tiek atjauninātas automātiski pēc push, bet izmanto citu mehānismu.
 
 Lietotne būs pieejama: `https://[username].github.io/[repository-name]/name_rating_app.html`
 
