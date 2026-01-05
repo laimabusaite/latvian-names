@@ -424,6 +424,36 @@
             font-weight: 700;
         }
 
+        .mobile-menu-item.user-info-item {
+            color: #667eea;
+            font-weight: 600;
+            background: #f0f4ff;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: default;
+        }
+
+        .mobile-menu-item.user-info-item:hover {
+            background: #e0e8ff;
+        }
+
+        .mobile-menu-item.user-info-item .user-email-text {
+            font-size: 0.9em;
+            font-style: italic;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mobile-menu-item.user-info-item .logout-btn {
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
         .mobile-menu-item.toggle-item {
             justify-content: space-between;
             align-items: center;
@@ -837,46 +867,6 @@
             border-color: #667eea;
         }
 
-        .user-info {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .user-info .user-email {
-            color: #495057;
-            font-weight: 600;
-            font-style: italic;
-        }
-
-        .user-info .user-email.anonymous {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-
-        .user-info .logout-btn {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .user-info .logout-btn:hover {
-            background: #c82333;
-        }
 
         .login-button {
             position: fixed;
@@ -1466,6 +1456,11 @@
             <span>🔐</span>
             <span>Pieteikties</span>
         </button>
+        <div class="mobile-menu-item user-info-item" id="mobileUserInfo" style="display: none;">
+            <span>👤</span>
+            <span class="user-email-text" id="mobileUserEmail"></span>
+            <button class="logout-btn" id="mobileLogoutBtn" style="padding: 4px 12px; font-size: 0.85em;">Iziet</button>
+        </div>
         <button class="mobile-menu-item collapse-all-item" id="mobileCollapseAllButton">
             <span>⬇️</span>
             <span id="mobileCollapseAllText">Sakļaut visu</span>
@@ -1541,12 +1536,6 @@
         <button type="button" class="btn-skip" id="skipLoginBtn">
             Turpināt bez pieteikšanās
         </button>
-    </div>
-
-    <!-- User Info -->
-    <div class="user-info" id="userInfo" style="display: none;">
-        <span class="user-email" id="userEmail"></span>
-        <button class="logout-btn" id="logoutBtn">Iziet</button>
     </div>
 
     <!-- Login Button (shown when not logged in) -->
@@ -1707,7 +1696,7 @@
             try {
                 await auth.signOut();
                 currentUser = null;
-                document.getElementById('userInfo').style.display = 'none';
+                document.getElementById('mobileUserInfo').style.display = 'none';
                 
                 // Clear all data on logout
                 ratings = {};
@@ -1804,21 +1793,27 @@
                 console.log('Auth state changed:', user ? 'User logged in' : 'No user');
                 currentUser = user;
                 if (user) {
-                    // Display user info (email for regular users, "Anonīms lietotājs" for anonymous)
-                    const userEmailEl = document.getElementById('userEmail');
+                    // Display user info in mobile menu (email for regular users, "Anonīms lietotājs" for anonymous)
+                    const mobileUserEmailEl = document.getElementById('mobileUserEmail');
+                    let userDisplayText = '';
+                    
                     if (user.isAnonymous) {
-                        userEmailEl.textContent = 'Anonīms lietotājs';
-                        userEmailEl.classList.add('anonymous');
+                        userDisplayText = 'Anonīms lietotājs';
                     } else {
-                        userEmailEl.classList.remove('anonymous');
                         if (user.email) {
-                            userEmailEl.textContent = user.email;
+                            userDisplayText = user.email;
                         } else {
                             // Fallback for users without email
-                            userEmailEl.textContent = user.displayName || 'Lietotājs';
+                            userDisplayText = user.displayName || 'Lietotājs';
                         }
                     }
-                    document.getElementById('userInfo').style.display = 'flex';
+                    
+                    // Update mobile menu user info
+                    if (mobileUserEmailEl) {
+                        mobileUserEmailEl.textContent = userDisplayText;
+                    }
+                    
+                    document.getElementById('mobileUserInfo').style.display = 'flex';
                     document.getElementById('loginButton').style.display = 'none';
                     document.getElementById('mobileLoginButton').style.display = 'none';
                     updateCollapseTogglePosition();
@@ -1830,7 +1825,7 @@
                         updateStats();
                     }
                 } else {
-                    document.getElementById('userInfo').style.display = 'none';
+                    document.getElementById('mobileUserInfo').style.display = 'none';
                     // Show login button if Firebase is configured
                     document.getElementById('loginButton').style.display = 'block';
                     document.getElementById('mobileLoginButton').style.display = 'flex';
@@ -2664,7 +2659,11 @@
         document.getElementById('googleSignInBtn').addEventListener('click', handleGoogleSignIn);
 
         // Logout button
-        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        document.getElementById('mobileLogoutBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent menu item click
+            handleLogout();
+            closeMobileMenu(); // Close menu after logout
+        });
 
         // Close login modal on overlay click
         document.getElementById('loginOverlay').addEventListener('click', () => {
@@ -2972,8 +2971,7 @@
         if (isFirebaseConfigured) {
             // Wait a bit for auth state to initialize, then show modal if no user
             setTimeout(() => {
-                const userInfo = document.getElementById('userInfo');
-                if (!currentUser && userInfo.style.display !== 'flex') {
+                if (!currentUser) {
                     showLoginModal();
                 }
             }, 500);
@@ -2981,4 +2979,5 @@
     </script>
 </body>
 </html>
+
 
