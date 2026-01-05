@@ -423,7 +423,7 @@
     "name": "Iva",
     "date": "02.01",
     "gender": "Sieviete",
-    "count": 32,
+    "count": 30,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -5732,8 +5732,8 @@
   {
     "name": "Roberts",
     "date": "14.01",
-    "gender": "Sieviete",
-    "count": 9894,
+    "gender": "Vīrietis",
+    "count": 9893,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 18,
@@ -17223,7 +17223,7 @@
     "name": "Raja",
     "date": "09.02",
     "gender": "Sieviete",
-    "count": 79,
+    "count": 78,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -17283,7 +17283,7 @@
     "name": "Simone",
     "date": "09.02",
     "gender": "Sieviete",
-    "count": 21,
+    "count": 12,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -26373,7 +26373,7 @@
     "name": "Andrea",
     "date": "27.02",
     "gender": "Sieviete",
-    "count": 104,
+    "count": 63,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -30723,7 +30723,7 @@
     "name": "Margo",
     "date": "08.03",
     "gender": "Sieviete",
-    "count": 29,
+    "count": 24,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -34892,8 +34892,8 @@
   {
     "name": "Ilija",
     "date": "18.03",
-    "gender": "Sieviete",
-    "count": 23,
+    "gender": "Vīrietis",
+    "count": 22,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -37353,7 +37353,7 @@
     "name": "Gabriele",
     "date": "22.03",
     "gender": "Sieviete",
-    "count": 22,
+    "count": 14,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -44583,7 +44583,7 @@
     "name": "Dane",
     "date": "08.04",
     "gender": "Sieviete",
-    "count": 7,
+    "count": 6,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -60693,7 +60693,7 @@
     "name": "Inna",
     "date": "12.05",
     "gender": "Sieviete",
-    "count": 3426,
+    "count": 3425,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -67952,8 +67952,8 @@
   {
     "name": "Ezra",
     "date": "26.05",
-    "gender": "Sieviete",
-    "count": 19,
+    "gender": "Vīrietis",
+    "count": 17,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -69903,7 +69903,7 @@
     "name": "Viļa",
     "date": "28.05",
     "gender": "Sieviete",
-    "count": 9,
+    "count": 7,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -71222,8 +71222,8 @@
   {
     "name": "Alis",
     "date": "31.05",
-    "gender": "Sieviete",
-    "count": 10,
+    "gender": "Vīrietis",
+    "count": 9,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -86433,7 +86433,7 @@
     "name": "Nāra",
     "date": "02.07",
     "gender": "Sieviete",
-    "count": 5,
+    "count": 4,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -101433,7 +101433,7 @@
     "name": "Elija",
     "date": "02.08",
     "gender": "Sieviete",
-    "count": 301,
+    "count": 293,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -101583,7 +101583,7 @@
     "name": "Elis",
     "date": "02.08",
     "gender": "Sieviete",
-    "count": 2,
+    "count": 1,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -101792,8 +101792,8 @@
   {
     "name": "Noa",
     "date": "02.08",
-    "gender": "Sieviete",
-    "count": 197,
+    "gender": "Vīrietis",
+    "count": 144,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -102633,7 +102633,7 @@
     "name": "Roma",
     "date": "04.08",
     "gender": "Sieviete",
-    "count": 30,
+    "count": 23,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -104463,7 +104463,7 @@
     "name": "Rema",
     "date": "07.08",
     "gender": "Sieviete",
-    "count": 5,
+    "count": 4,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -104972,8 +104972,8 @@
   {
     "name": "Renē",
     "date": "08.08",
-    "gender": "Sieviete",
-    "count": 43,
+    "gender": "Vīrietis",
+    "count": 31,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -105393,7 +105393,7 @@
     "name": "Geņa",
     "date": "09.08",
     "gender": "Sieviete",
-    "count": 58,
+    "count": 57,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -105512,8 +105512,8 @@
   {
     "name": "Sava",
     "date": "09.08",
-    "gender": "Sieviete",
-    "count": 63,
+    "gender": "Vīrietis",
+    "count": 62,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -113823,7 +113823,7 @@
     "name": "Neta",
     "date": "26.08",
     "gender": "Sieviete",
-    "count": 26,
+    "count": 25,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -117363,7 +117363,7 @@
     "name": "Eliza",
     "date": "02.09",
     "gender": "Sieviete",
-    "count": 64,
+    "count": 63,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -122403,7 +122403,7 @@
     "name": "Iza",
     "date": "13.09",
     "gender": "Sieviete",
-    "count": 5,
+    "count": 4,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -126512,8 +126512,8 @@
   {
     "name": "Maris",
     "date": "22.09",
-    "gender": "Sieviete",
-    "count": 19,
+    "gender": "Vīrietis",
+    "count": 18,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -127712,8 +127712,8 @@
   {
     "name": "Nikita",
     "date": "26.09",
-    "gender": "Sieviete",
-    "count": 1930,
+    "gender": "Vīrietis",
+    "count": 1916,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -127742,8 +127742,8 @@
   {
     "name": "Ņikita",
     "date": "26.09",
-    "gender": "Sieviete",
-    "count": 4047,
+    "gender": "Vīrietis",
+    "count": 4044,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -133653,7 +133653,7 @@
     "name": "Aino",
     "date": "08.10",
     "gender": "Sieviete",
-    "count": 13,
+    "count": 8,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -134282,8 +134282,8 @@
   {
     "name": "Helge",
     "date": "09.10",
-    "gender": "Sieviete",
-    "count": 4,
+    "gender": "Vīrietis",
+    "count": 3,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -134313,7 +134313,7 @@
     "name": "Helgi",
     "date": "09.10",
     "gender": "Sieviete",
-    "count": 4,
+    "count": 3,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -135903,7 +135903,7 @@
     "name": "Mina",
     "date": "14.10",
     "gender": "Sieviete",
-    "count": 20,
+    "count": 17,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -135993,7 +135993,7 @@
     "name": "Minna",
     "date": "14.10",
     "gender": "Sieviete",
-    "count": 28,
+    "count": 27,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -136233,7 +136233,7 @@
     "name": "Ede",
     "date": "15.10",
     "gender": "Sieviete",
-    "count": 6,
+    "count": 5,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -137822,8 +137822,8 @@
   {
     "name": "Luka",
     "date": "18.10",
-    "gender": "Sieviete",
-    "count": 280,
+    "gender": "Vīrietis",
+    "count": 279,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -145742,8 +145742,8 @@
   {
     "name": "Leo",
     "date": "06.11",
-    "gender": "Sieviete",
-    "count": 888,
+    "gender": "Vīrietis",
+    "count": 887,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -147123,7 +147123,7 @@
     "name": "Aleksa",
     "date": "08.11",
     "gender": "Sieviete",
-    "count": 518,
+    "count": 516,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -154623,7 +154623,7 @@
     "name": "Ziga",
     "date": "23.11",
     "gender": "Sieviete",
-    "count": 2,
+    "count": 1,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -161102,8 +161102,8 @@
   {
     "name": "Niko",
     "date": "06.12",
-    "gender": "Sieviete",
-    "count": 69,
+    "gender": "Vīrietis",
+    "count": 68,
     "kalendārs": "paplašinātais",
     "popularity": {
       "1920": 0,
@@ -161133,7 +161133,7 @@
     "name": "Nikola",
     "date": "06.12",
     "gender": "Sieviete",
-    "count": 2696,
+    "count": 2670,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -164703,7 +164703,7 @@
     "name": "Hanna",
     "date": "15.12",
     "gender": "Sieviete",
-    "count": 1102,
+    "count": 1101,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -167763,7 +167763,7 @@
     "name": "Gija",
     "date": "26.12",
     "gender": "Sieviete",
-    "count": 50,
+    "count": 43,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,
@@ -168123,7 +168123,7 @@
     "name": "Inga",
     "date": "28.12",
     "gender": "Sieviete",
-    "count": 12173,
+    "count": 12157,
     "kalendārs": "tradicionālais",
     "popularity": {
       "1920": 0,

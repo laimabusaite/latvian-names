@@ -70,7 +70,7 @@ def load_gender_data(gender_file: str) -> Dict[str, Dict[str, Any]]:
                     # names = [name.strip() for name in vardi.split() if name.strip()]
                     names = vardi.strip()
                     # Store the gender and count for each individual name
-                    # If a name appears multiple times, sum the counts
+                    # If a name appears multiple times, keep the entry with the highest count
                     # for name in names:
                     if names not in gender_lookup:
                         gender_lookup[names] = {
@@ -78,8 +78,12 @@ def load_gender_data(gender_file: str) -> Dict[str, Dict[str, Any]]:
                             "count": count,
                         }
                     else:
-                        # If name already exists, add to the count
-                        gender_lookup[names]["count"] += count
+                        # If name already exists, keep the entry with the higher count
+                        if count > gender_lookup[names]["count"]:
+                            gender_lookup[names] = {
+                                "gender": normalized_gender,
+                                "count": count,
+                            }
 
         return gender_lookup
 
