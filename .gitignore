@@ -10,7 +10,7 @@ ENV/
 .venv
 
 # Data files (keep structure but ignore large files)
-data/*.csv
+# CSV files are tracked with Git LFS, see .gitattributes
 !data/.gitkeep
 
 # IDE
@@ -27,4 +27,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+
 
