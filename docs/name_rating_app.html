@@ -55,6 +55,58 @@
             font-size: 0.85em;
         }
 
+        .collapse-toggle {
+            position: fixed;
+            top: 15px;
+            left: 200px; /* Positioned next to login button with more spacing to avoid overlap */
+            background: #667eea;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.3s;
+            z-index: 99; /* Slightly lower than login button to ensure login is on top if they overlap */
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .collapse-toggle:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .collapse-toggle .icon {
+            font-size: 1.1em;
+            transition: transform 0.3s;
+        }
+
+        .controls.collapsed ~ .collapse-toggle .icon,
+        .collapse-toggle.collapsed .icon {
+            transform: rotate(180deg);
+        }
+
+        .controls {
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .controls.collapsed {
+            max-height: 0;
+            padding: 0 15px;
+            border-bottom: none;
+            overflow: hidden;
+        }
+
         .controls {
             padding: 10px 15px;
             background: #f8f9fa;
@@ -219,6 +271,116 @@
 
         .stats-inline .stat-box {
             flex: 0 0 auto;
+        }
+
+        /* Menu System (Mobile & Desktop) */
+        .mobile-menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            z-index: 200;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            display: block; /* Visible on all screen sizes */
+        }
+
+        .mobile-menu-toggle:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 198;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 60px;
+            left: 15px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 199;
+            min-width: 200px;
+            max-width: 90%;
+            display: none;
+            flex-direction: column;
+            gap: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .mobile-menu.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu-item {
+            padding: 12px 16px;
+            border: none;
+            background: white;
+            color: #495057;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .mobile-menu-item.login-item {
+            color: #667eea;
+        }
+
+        .mobile-menu-item.save-item {
+            color: #28a745;
+        }
+
+        .mobile-menu-item.load-item {
+            color: #007bff;
+        }
+
+        .mobile-menu-item.clear-item {
+            color: #dc3545;
+        }
+
+        .mobile-menu-item.filter-item {
+            color: #667eea;
         }
 
         .clear-button {
@@ -664,6 +826,14 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
+        /* Hide individual buttons on all screen sizes - use menu instead */
+        .clear-button,
+        .save-load-buttons,
+        .login-button,
+        .collapse-toggle {
+            display: none !important;
+        }
+
         .sync-status {
             position: fixed;
             bottom: 20px;
@@ -813,6 +983,33 @@
             .header h1 {
                 font-size: 1.2em;
                 margin-bottom: 3px;
+            }
+            
+            
+            .mobile-menu-toggle {
+                top: 10px;
+                left: 10px;
+                padding: 8px 10px;
+            }
+            
+            .mobile-menu {
+                top: 55px;
+                left: 10px;
+                min-width: 180px;
+            }
+        }
+
+        /* Desktop menu positioning */
+        @media (min-width: 769px) {
+            .mobile-menu {
+                top: 60px;
+                left: 15px;
+                min-width: 220px;
+            }
+            
+            .mobile-menu-item {
+                padding: 10px 14px;
+                font-size: 0.85em;
             }
             
             .controls {
@@ -1101,10 +1298,16 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
+        <div class="header" id="header">
             <h1>🇱🇻 Latviešu vārdadienas</h1>
             <p>Vērtē un izpēti latviešu vārdus</p>
         </div>
+        
+        <!-- Collapse Filters Button (Desktop) -->
+        <button class="collapse-toggle" id="collapseToggle" title="Sakļaut/Izvērst filtrus">
+            <span class="icon">▼</span>
+            <span class="text">Sakļaut filtrus</span>
+        </button>
 
         <div class="controls">
             <div class="tabs" id="tabs">
@@ -1178,6 +1381,32 @@
             <div class="no-results" id="noResults" style="display: none;">Nav vārdu, kas atbilst pašreizējiem filtriem.</div>
             <div class="names-grid" id="namesGrid"></div>
         </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" title="Izvēlne">☰</button>
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-item login-item" id="mobileLoginButton" style="display: none;">
+            <span>🔐</span>
+            <span>Pieteikties</span>
+        </button>
+        <button class="mobile-menu-item filter-item" id="mobileFilterToggle">
+            <span>⚙️</span>
+            <span id="mobileFilterToggleText">Sakļaut filtrus</span>
+        </button>
+        <button class="mobile-menu-item save-item" id="mobileSaveButton">
+            <span>💾</span>
+            <span>Saglabāt</span>
+        </button>
+        <button class="mobile-menu-item load-item" id="mobileLoadButton">
+            <span>📂</span>
+            <span>Ielādēt</span>
+        </button>
+        <button class="mobile-menu-item clear-item" id="mobileClearButton">
+            <span>🗑️</span>
+            <span>Notīrīt visu</span>
+        </button>
     </div>
 
     <div class="save-load-buttons">
@@ -1423,6 +1652,8 @@
                 // Show login button if Firebase is configured
                 if (isFirebaseConfigured) {
                     document.getElementById('loginButton').style.display = 'block';
+                    document.getElementById('mobileLoginButton').style.display = 'flex';
+                    updateCollapseTogglePosition();
                     // Show login modal after logout
                     showLoginModal();
                 }
@@ -1502,6 +1733,8 @@
                     }
                     document.getElementById('userInfo').style.display = 'flex';
                     document.getElementById('loginButton').style.display = 'none';
+                    document.getElementById('mobileLoginButton').style.display = 'none';
+                    updateCollapseTogglePosition();
                     hideLoginModal();
                     await loadRatingsFromFirebase();
                     // Re-render after loading from Firebase
@@ -1513,6 +1746,8 @@
                     document.getElementById('userInfo').style.display = 'none';
                     // Show login button if Firebase is configured
                     document.getElementById('loginButton').style.display = 'block';
+                    document.getElementById('mobileLoginButton').style.display = 'flex';
+                    updateCollapseTogglePosition();
                     // Load from localStorage as fallback
                     loadRatings();
                     if (allNames.length > 0) {
@@ -1526,6 +1761,8 @@
         } else {
             // Firebase not configured - ensure login button is hidden
             document.getElementById('loginButton').style.display = 'none';
+            document.getElementById('mobileLoginButton').style.display = 'none';
+            updateCollapseTogglePosition();
         }
 
         // Load saved ratings from localStorage (fallback)
@@ -2338,9 +2575,178 @@
             }
         });
 
+        // Mobile Menu Functionality
+        let isMobileMenuOpen = false;
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileLoginButton = document.getElementById('mobileLoginButton');
+        const mobileSaveButton = document.getElementById('mobileSaveButton');
+        const mobileLoadButton = document.getElementById('mobileLoadButton');
+        const mobileClearButton = document.getElementById('mobileClearButton');
+
+        function toggleMobileMenu() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            if (isMobileMenuOpen) {
+                mobileMenu.classList.add('show');
+                mobileMenuOverlay.classList.add('show');
+            } else {
+                mobileMenu.classList.remove('show');
+                mobileMenuOverlay.classList.remove('show');
+            }
+        }
+
+        function closeMobileMenu() {
+            isMobileMenuOpen = false;
+            mobileMenu.classList.remove('show');
+            mobileMenuOverlay.classList.remove('show');
+        }
+
+        // Mobile menu toggle button
+        mobileMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+
+        // Close menu when clicking overlay
+        mobileMenuOverlay.addEventListener('click', () => {
+            closeMobileMenu();
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (isMobileMenuOpen && 
+                !mobileMenu.contains(e.target) && 
+                !mobileMenuToggle.contains(e.target)) {
+                closeMobileMenu();
+            }
+        });
+
+        // Mobile menu button actions
+        mobileLoginButton.addEventListener('click', () => {
+            if (isFirebaseConfigured) {
+                showLoginModal();
+            }
+            closeMobileMenu();
+        });
+
+        mobileSaveButton.addEventListener('click', () => {
+            saveRatingsToFile();
+            closeMobileMenu();
+        });
+
+        mobileLoadButton.addEventListener('click', () => {
+            document.getElementById('loadFileInput').click();
+            closeMobileMenu();
+        });
+
+        mobileClearButton.addEventListener('click', () => {
+            showClearDialog();
+            closeMobileMenu();
+        });
+
+        // Collapse/Expand functionality (filters only, header stays visible)
+        let isFiltersCollapsed = false;
+
+        function toggleFiltersCollapse() {
+            isFiltersCollapsed = !isFiltersCollapsed;
+            const controls = document.querySelector('.controls');
+            const toggle = document.getElementById('collapseToggle');
+            const toggleText = toggle ? toggle.querySelector('.text') : null;
+            const mobileFilterToggleText = document.getElementById('mobileFilterToggleText');
+            
+            if (isFiltersCollapsed) {
+                controls.classList.add('collapsed');
+                if (toggle) toggle.classList.add('collapsed');
+                if (toggleText) toggleText.textContent = 'Izvērst';
+                if (mobileFilterToggleText) mobileFilterToggleText.textContent = 'Izvērst filtrus';
+            } else {
+                controls.classList.remove('collapsed');
+                if (toggle) toggle.classList.remove('collapsed');
+                if (toggleText) toggleText.textContent = 'Sakļaut';
+                if (mobileFilterToggleText) mobileFilterToggleText.textContent = 'Sakļaut filtrus';
+            }
+            
+            // Save state to localStorage
+            localStorage.setItem('filtersCollapsed', isFiltersCollapsed.toString());
+        }
+
+        function loadCollapsedState() {
+            const saved = localStorage.getItem('filtersCollapsed');
+            if (saved === 'true') {
+                isFiltersCollapsed = true;
+                const controls = document.querySelector('.controls');
+                const toggle = document.getElementById('collapseToggle');
+                const toggleText = toggle ? toggle.querySelector('.text') : null;
+                const mobileFilterToggleText = document.getElementById('mobileFilterToggleText');
+                
+                controls.classList.add('collapsed');
+                if (toggle) toggle.classList.add('collapsed');
+                if (toggleText) toggleText.textContent = 'Izvērst';
+                if (mobileFilterToggleText) mobileFilterToggleText.textContent = 'Izvērst filtrus';
+            }
+        }
+
+        // Collapse toggle button (desktop)
+        const collapseToggle = document.getElementById('collapseToggle');
+        if (collapseToggle) {
+            collapseToggle.addEventListener('click', toggleFiltersCollapse);
+        }
+
+        // Mobile filter toggle
+        const mobileFilterToggle = document.getElementById('mobileFilterToggle');
+        if (mobileFilterToggle) {
+            mobileFilterToggle.addEventListener('click', () => {
+                toggleFiltersCollapse();
+                closeMobileMenu();
+            });
+        }
+
+        // Initialize mobile menu login button visibility
+        function updateMobileLoginButtonVisibility() {
+            const loginButton = document.getElementById('loginButton');
+            const mobileLoginButton = document.getElementById('mobileLoginButton');
+            const collapseToggle = document.getElementById('collapseToggle');
+            
+            if (isFirebaseConfigured && loginButton && loginButton.style.display !== 'none') {
+                mobileLoginButton.style.display = 'flex';
+                // Position collapse toggle next to login button
+                if (collapseToggle) {
+                    collapseToggle.style.left = '170px';
+                }
+            } else {
+                mobileLoginButton.style.display = 'none';
+                // Move collapse toggle to left when login button is hidden
+                if (collapseToggle) {
+                    collapseToggle.style.left = '15px';
+                }
+            }
+        }
+        
+        // Update collapse toggle position when login button visibility changes
+        function updateCollapseTogglePosition() {
+            const loginButton = document.getElementById('loginButton');
+            const collapseToggle = document.getElementById('collapseToggle');
+            
+            if (collapseToggle && loginButton) {
+                if (loginButton.style.display === 'none' || !loginButton.offsetParent) {
+                    collapseToggle.style.left = '15px';
+                } else {
+                    collapseToggle.style.left = '170px';
+                }
+            }
+        }
+
         // Initialize
+        loadCollapsedState(); // Load collapsed state first
         loadFilters(); // Load saved filters first
         loadData(); // Load data (ratings will be loaded by auth state listener or from localStorage)
+        
+        // Update mobile login button visibility and collapse toggle position after a short delay
+        setTimeout(() => {
+            updateMobileLoginButtonVisibility();
+            updateCollapseTogglePosition();
+        }, 1000);
         
         // Show login modal automatically if Firebase is configured and no user is logged in
         if (isFirebaseConfigured) {
