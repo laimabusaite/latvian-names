@@ -426,23 +426,36 @@
 
         .mobile-menu-item.toggle-item {
             justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .mobile-menu-item.toggle-item > span:first-child {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .mobile-menu-item.toggle-item > span:not(:first-child) {
+            flex: 1;
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
         }
 
         .mobile-menu-item.toggle-item::after {
             content: '▼';
             font-size: 0.8em;
             transition: transform 0.3s;
-            margin-left: auto;
+            margin-left: 10px;
             flex-shrink: 0;
+            display: inline-block;
         }
 
         .mobile-menu-item.toggle-item.active::after {
             transform: rotate(180deg);
-        }
-
-        .mobile-menu-item.toggle-item span:not(:first-child) {
-            flex: 1;
-            text-align: left;
         }
 
         .clear-button {
@@ -2239,12 +2252,36 @@
             document.getElementById('filteredNames').textContent = filtered.length;
             document.getElementById('ratedNames').textContent = ratedCount;
 
-            // Update tab counts
-            const unratedCount = allNames.filter(name => {
+            // Update tab counts - show filtered unrated count
+            const genderFilter = document.getElementById('genderFilter').value;
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+
+            // Get filtered names (without tab filter) that are unrated
+            const filteredWithoutTab = allNames.filter(name => {
+                // Apply same filters as filterNames() but without tab filter
+                if (!showExpandedCalendar && name.kalendārs !== 'tradicionālais') {
+                    return false;
+                }
+                if (genderFilter !== 'all' && name.gender !== genderFilter) {
+                    return false;
+                }
+                if (dateFrom || dateTo) {
+                    const nameDate = name.date;
+                    if (!isDateInRange(nameDate, dateFrom, dateTo)) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            
+            // Count unrated names from filtered set
+            const filteredUnrated = filteredWithoutTab.filter(name => {
                 const key = `${name.name}_${name.date}`;
                 return !ratings[key] || ratings[key] === 0;
             }).length;
-            document.getElementById('unratedCount').textContent = unratedCount;
+            
+            document.getElementById('unratedCount').textContent = filteredUnrated;
 
             // Count names by rating
             for (let i = 1; i <= 5; i++) {
